@@ -7,10 +7,18 @@ authors = ["zhiwen.wang <zhiwen.wang@airudder.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 celery = "^5.2.5"
-pydantic = {extras = ["dotenv"], version = "^1.9.0"}
+pydantic = { extras = ["dotenv"], version = "^1.9.0"}
 fastapi = "^0.75.1"
 uvicorn = {extras = ["standard"], version = "^0.17.6"}
 loguru = "^0.6.0"
+redis = "^4.2.2"
+sqlmodel = "^0.0.6"
+alembic = "^1.7.7"
+psycopg2-binary = "^2.9.3"
+passlib = "^1.7.4"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+toml = "^0.10.2"
+pytoml = "^0.1.21"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.18.1"
