@@ -1,5 +1,5 @@
 import inspect
-from typing import List
+from typing import List, get_type_hints
 from fastapi import APIRouter, Depends
 
 from aggra.app import deps
@@ -20,11 +20,30 @@ def get_job(
     for k, v in app.celery.tasks.items():
         if k.startswith("celery."):
             continue
-
+        args = inspect.getfullargspec(v.run)
+        args_meta = {
+            "args": args.args,
+            "defaults": args.defaults,
+            "varargs": args.varargs,
+            "varkw": args.varkw,
+            "kwonlyargs": args.kwonlyargs,
+            "kwonlydefaults": args.kwonlydefaults,
+            "annotations": {
+                k: str(v)
+                for k, v in args.annotations.items()
+            },
+        }
         job = Job(
-            name=k,
-            description=inspect.getdoc(v)
+            job_name=k,
+            name=v.__name__,
+            module=v.__module__,
+            description=inspect.getdoc(v),
+            max_retries=v.max_retries,
+            rate_limit=v.rate_limit,
+            ignore_result=v.ignore_result,
+            expires=v.expires,
+            priority=v.priority,
+            args_meta=args_meta,
         )
-        print(inspect.getfullargspec(v))
         jobs.append(job)
     return jobs

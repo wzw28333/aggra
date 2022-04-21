@@ -25,7 +25,7 @@ class Aggra:
         self._redis_pool = self.setup_redis_pool()
         self._sqlmodel_engine = self.setup_sqlmodel_engine()
         self.celery = self.setup_celery()
-        self._app = self.setup_fastapi()
+        self.server = self.setup_fastapi()
 
     def setup_redis_pool(self) -> redis.ConnectionPool:
         logger.debug("Setting up Redis Pool")
@@ -78,6 +78,3 @@ class Aggra:
             app.state.aggra = self
 
         return app
-
-    def run(self):
-        return uvicorn.run(self._app)
